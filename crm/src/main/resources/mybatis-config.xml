@@ -5,10 +5,10 @@
 
 <configuration>
     <settings>
-        <setting name="logIml" value="STDOUT_LOGGING"/>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>
     <typeAliases>
-        <package name="com.jch.crm.model"/>
+        <package name="com.jch.crm.domain"/>
     </typeAliases>
     <mappers>
         <package name="com.jch.crm.mapper"/>
