@@ -34,7 +34,7 @@
           <element id="library" level="project" name="Maven: org.glassfish:jakarta.el:3.0.3" />
           <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:9.0.37" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.30" />
-          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.43" />
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.49" />
           <element id="library" level="project" name="Maven: com.alibaba:druid:1.1.1" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.4.1" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:4.3.9.RELEASE" />

@@ -41,7 +41,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.43</version>
+            <version>5.1.49</version>
         </dependency>
 
         <!-- JDBC数据源连接池 -->
@@ -212,6 +212,25 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
 			</plugin>
+            <!--myBatis逆向工程插件-->
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.7</version>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>5.1.49</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <verbose>true</verbose>
+                    <overwrite>true</overwrite>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
