@@ -1,0 +1,26 @@
+tbl_user   用户表
+
+tbl_dic_type   数据字典类型表
+tbl_dic_value  数据字典值
+
+tbl_activity   市场活动表
+tbl_activity_remark  市场活动备注表
+
+tbl_clue       线索表
+tbl_clue_remark   线索备注表
+
+tbl_clue_activity_relation  线索和市场活动的关联关系表
+
+tbl_customer   客户表
+tbl_customer_remark  客户备注表
+
+tbl_contacts   联系人表
+tbl_contacts_remark 联系人备注表
+
+tbl_contacts_activity_relation 联系人和市场活动的关联关系表
+
+tbl_tran       交易表
+tbl_tran_remark  交易备注表
+tbl_tran_history  交易历史表
+
+tbl_task   任务表
