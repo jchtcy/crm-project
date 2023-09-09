@@ -11,6 +11,12 @@
 <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(function () {
+		// 给整个浏览器窗口添加键盘按下事件
+		$(window).keydown(function (e){
+			if (e.keyCode == 13) {
+				$("#loginButton").click();
+			}
+		});
 		//登录按钮添加点击事件
 		$("#loginButton").click(function () {
 			//收集参数
