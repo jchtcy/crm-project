@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,7 +34,8 @@ public class UserController {
 
     @RequestMapping("/settings/qx/user/login.do")
     @ResponseBody
-    public Object login(String loginAct, String loginPwd, String isRemPwd, HttpServletRequest request, HttpSession session){
+    public Object login(String loginAct, String loginPwd, String isRemPwd, HttpServletRequest request,
+                        HttpServletResponse response, HttpSession session){
         //封装参数
         Map<String, Object> map = new HashMap<>();
         map.put("loginAct", loginAct);
@@ -63,6 +66,24 @@ public class UserController {
 
                 //将user保存到session中
                 session.setAttribute(Contants.SESSION_USER, user);
+
+                // 如果需要记住密码,则往外写cookie
+                if ("true".equals(isRemPwd)) {
+                    Cookie loginActCookie = new Cookie("loginAct", user.getLoginAct());
+                    loginActCookie.setMaxAge(60*60*24*10);
+                    response.addCookie(loginActCookie);
+                    Cookie loginPwdCookie = new Cookie("loginPwd", user.getLoginPwd());
+                    loginPwdCookie.setMaxAge(60*60*24*10);
+                    response.addCookie(loginPwdCookie);
+                } else {
+                    // 把没有过期的Cookie删除
+                    Cookie loginActCookie = new Cookie("loginAct", "1");
+                    loginActCookie.setMaxAge(0);
+                    response.addCookie(loginActCookie);
+                    Cookie loginPwdCookie = new Cookie("loginPwd", "1");
+                    loginPwdCookie.setMaxAge(0);
+                    response.addCookie(loginPwdCookie);
+                }
             }
         }
         return returnObject;
