@@ -88,4 +88,19 @@ public class UserController {
         }
         return returnObject;
     }
+
+    @RequestMapping("/settings/qx/user/logout.do")
+    public String logout(HttpServletResponse response, HttpSession session) {
+        // 清空cookie
+        Cookie loginActCookie = new Cookie("loginAct", "1");
+        loginActCookie.setMaxAge(0);
+        response.addCookie(loginActCookie);
+        Cookie loginPwdCookie = new Cookie("loginPwd", "1");
+        loginPwdCookie.setMaxAge(0);
+        response.addCookie(loginPwdCookie);
+        // 销毁session
+        session.invalidate();
+        // 跳转到首页
+        return "redirect:/";
+    }
 }
