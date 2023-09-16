@@ -239,4 +239,24 @@
       #{id}
     </foreach>
   </delete>
+  <select id="selectActivityById" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"> </include>
+    from tbl_activity
+    where id = #{id}
+  </select>
+  <update id="updateEditActivity" parameterType="com.jch.crm.workbench.domain.Activity">
+    update tbl_activity
+    <set>
+      <if test="owner != null and owner != ''">owner = #{owner},</if>
+      <if test="name != null and name != ''">name = #{name},</if>
+      <if test="startDate != null and startDate != ''">start_date = #{startDate},</if>
+      <if test="endDate != null and endDate != ''">end_date = #{endDate},</if>
+      <if test="cost != null and cost != ''">cost = #{cost},</if>
+      <if test="description != null and description != ''">description = #{description},</if>
+      <if test="editTime != null and editTime != ''">edit_time = #{editTime},</if>
+      <if test="editBy != null and editBy != ''">edit_by = #{editBy},</if>
+    </set>
+    where id = #{id}
+  </update>
 </mapper>

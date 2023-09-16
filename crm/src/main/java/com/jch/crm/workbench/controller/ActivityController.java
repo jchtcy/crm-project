@@ -36,7 +36,7 @@ public class ActivityController {
     @RequestMapping("/workbench/activity/saveCreateActivity.do")
     @ResponseBody
     public Object saveCreateActivity(Activity activity, HttpSession session) {
-        User user = (User)session.getAttribute(Contants.SESSION_USER);
+        User user = (User) session.getAttribute(Contants.SESSION_USER);
         activity.setId(UUIDUtils.getUUID());
         activity.setCreateTime(DateUtils.formateDateTime(new Date()));
         activity.setCreateBy(user.getId());
@@ -67,7 +67,7 @@ public class ActivityController {
         map.put("owner", owner);
         map.put("startDate", startDate);
         map.put("endDate", endDate);
-        map.put("pageNo", (pageNo - 1)*pageSize);
+        map.put("pageNo", (pageNo - 1) * pageSize);
         map.put("pageSize", pageSize);
         List<Activity> activityList = activityService.listActivityByConditionForPage(map);
         int totalRows = activityService.queryCountOfActivityByCondition(map);
@@ -94,6 +94,36 @@ public class ActivityController {
             e.printStackTrace();
             returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
             returnObject.setMessage("系统忙,请稍后重试");
+        }
+        return returnObject;
+    }
+
+    @RequestMapping("/workbench/activity/queryActivityById.do")
+    @ResponseBody
+    public Object queryActivityById(String id) {
+        Activity activity = activityService.queryActivityById(id);
+        return activity;
+    }
+
+    @RequestMapping("/workbench/activity/saveEditActivity.do")
+    @ResponseBody
+    private Object saveEditActivity(Activity activity, HttpSession session) {
+        ReturnObject returnObject = new ReturnObject();
+
+        User user = (User) session.getAttribute(Contants.SESSION_USER);
+        activity.setCreateTime(DateUtils.formateDateTime(new Date()));
+        activity.setCreateBy(user.getId());
+
+        try {
+            int count = activityService.updateEditActivity(activity);
+            if (count > 0 ) {
+                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+            } else {
+                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setMessage("系统忙,请稍后重试");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return returnObject;
     }
