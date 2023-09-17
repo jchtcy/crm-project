@@ -18,4 +18,8 @@ public interface ActivityService {
     Activity queryActivityById(String id);
 
     int updateEditActivity(Activity activity);
+
+    List<Activity> queryAllActivitys();
+
+    List<Activity> queryActivitysByIds(String[] ids);
 }

@@ -254,6 +254,28 @@
 				}
 			});
 		});
+
+		// 批量导出按钮添加单击事件
+		$("#exportActivityAllBtn").click(function () {
+			window.location.href = "workbench/activity/exportAllActivitys.do";
+		});
+		// 选择导出按钮添加单击事件
+		$("#exportActivityXzBtn").click(function () {
+			// 获取列表中所有被选中的checkbox
+			var checkedIds = $("#tBody input[type='checkbox']:checked");
+			// 发送请求
+			if (checkedIds.size() == 0) {
+				alert("请选择要导出的市场活动");
+				return;
+			}
+			var ids="";
+			$.each(checkedIds, function () {
+				ids += "id=" + this.value + "&";
+			});
+			ids.substring(0, ids.length - 1)
+			window.location.href = "workbench/activity/exportActivitysByIds.do" + "?" +ids;
+		});
+
 	});
 
 	function queryActivityByConditionForPage(pageNo, pageSize) {
