@@ -276,6 +276,41 @@
 			window.location.href = "workbench/activity/exportActivitysByIds.do" + "?" +ids;
 		});
 
+		// 给导入按钮添加单击事件
+		$("#importActivityBtn").click(function () {
+			// 收集参数
+			var activityFileName = $("#activityFile").val();
+			if (activityFileName.substr(activityFileName.lastIndexOf(".") + 1).toLowerCase() != "xls") {
+				alert("只能上传xls文件");
+				return;
+			}
+			var activityFile = $("#activityFile")[0].files[0];
+			if (activityFile.size > 5*1024*1024) {
+				alert("文件大小不超过5MB");
+				return;
+			}
+			var formDate = new FormData();
+			formDate.append("activityFile", activityFile);
+			$.ajax({
+				url: "workbench/activity/importActivity.do",
+				data: formDate,
+				processData: false,// 默认情况下, 所有参数都会转为字符串
+				contentType: false,// 默认情况下, 所有参数都会按urlencoded编码
+				type: "post",
+				dataType: 'json',
+				success: function (data) {
+					if (data.code == "1") {
+						alert("成功导入" + data.data + "条记录");
+						$("#importActivityModal").modal("hide");
+						queryActivityByConditionForPage(1, $("#page").bs_pagination("getOption", "rowsPerPage"))
+					} else {
+						alert(data.message);
+						$("#importActivityModal").modal("show");
+					}
+				}
+			});
+
+		});
 	});
 
 	function queryActivityByConditionForPage(pageNo, pageSize) {

@@ -3,7 +3,7 @@ package com.jch.crm.workbench.controller;
 import com.jch.crm.commons.contants.Contants;
 import com.jch.crm.commons.domain.ReturnObject;
 import com.jch.crm.commons.utils.DateUtils;
-import com.jch.crm.commons.utils.FileUtils;
+import com.jch.crm.commons.utils.HSSFUtils;
 import com.jch.crm.commons.utils.UUIDUtils;
 import com.jch.crm.settings.domain.User;
 import com.jch.crm.settings.service.UserService;
@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -136,8 +136,8 @@ public class ActivityController {
         return returnObject;
     }
 
-    // test
-    @RequestMapping("/workbench/activity/fileDowwnload.do")
+    // testFileDownload
+    @RequestMapping("/workbench/activity/fileDownload.do")
     public void fileDownload(HttpServletResponse response) {
         // 1、设置响应类型
         response.setContentType("application/octet-stream; charset=UTF-8");
@@ -166,15 +166,95 @@ public class ActivityController {
         }
     }
 
+    /**
+     * testFileUpload
+     * 配置springmvc的文件上传解析器
+     */
+    @RequestMapping("/workbench/activity/fileUpload.do")
+    @ResponseBody
+    public Object fileUpload (String username, MultipartFile myFile) throws IOException {
+        System.out.println(username);
+        // 把文件传到服务器
+        // 路径不存在会报错, 文件可以不创建
+        myFile.transferTo(new File("D:\\work\\serve\\" + myFile.getOriginalFilename()));
+
+        // 返回响应信息
+        ReturnObject returnObject = new ReturnObject();
+        returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+        returnObject.setMessage("上传成功");
+        return returnObject;
+    }
+
     @RequestMapping("/workbench/activity/exportAllActivitys.do")
     public void exportAllActivitys(HttpServletResponse response) throws IOException {
         List<Activity> activityList = activityService.queryAllActivitys();
-        FileUtils.fileDownloadActivityList(response, activityList);
+        HSSFUtils.fileDownloadActivityList(response, activityList);
     }
 
     @RequestMapping("/workbench/activity/exportActivitysByIds.do")
     public void exportActivitysByIds(String[] id, HttpServletResponse response) throws IOException {
         List<Activity> activityList = activityService.queryActivitysByIds(id);
-        FileUtils.fileDownloadActivityList(response, activityList);
+        HSSFUtils.fileDownloadActivityList(response, activityList);
+    }
+
+    @RequestMapping("/workbench/activity/importActivity.do")
+    @ResponseBody
+    public Object importActivity(MultipartFile activityFile, HttpSession session) {
+        User loginUser = (User) session.getAttribute(Contants.SESSION_USER);
+        String loginUserId = loginUser.getId();
+        ReturnObject returnObject = new ReturnObject();
+        // 把excel写入磁盘目录
+        InputStream is = null;
+        try {
+            is = activityFile.getInputStream();
+            // 解析excel文件
+            HSSFWorkbook wb = new HSSFWorkbook(is);
+            HSSFSheet sheet = wb.getSheetAt(0);
+            HSSFRow row = null;
+            HSSFCell cell = null;
+            Activity activity = null;
+            List<Activity> activityList = new ArrayList<>();
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                row = sheet.getRow(i);
+                activity = new Activity();
+                activity.setId(UUIDUtils.getUUID());
+                activity.setOwner(loginUserId);
+                activity.setCreateTime(DateUtils.formateDateTime(new Date()));
+                activity.setCreateBy(loginUserId);
+                activity.setEditTime("");
+                activity.setEditBy("");
+                for (int j = 0; j < row.getLastCellNum(); j++) {
+                    cell = row.getCell(j);
+
+                    String cellValue = HSSFUtils.getCellValueForStr(cell);
+                    if (j == 0) {
+                        activity.setName(cellValue);
+                    } else if (j == 1) {
+                        activity.setStartDate(cellValue);
+                    } else if (j == 2) {
+                        activity.setEndDate(cellValue);
+                    } else if (j == 3) {
+                        activity.setCost(cellValue);
+                    } else if (j == 4) {
+                        activity.setDescription(cellValue);
+                    }
+                }
+                activityList.add(activity);
+            }
+            int count = activityService.saveCreateActivityByList(activityList);
+            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+            returnObject.setData(count);
+        } catch (IOException e) {
+            e.printStackTrace();
+            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setMessage("系统忙, 请稍后重试");
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return returnObject;
     }
 }

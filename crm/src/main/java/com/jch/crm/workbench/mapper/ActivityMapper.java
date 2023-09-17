@@ -98,4 +98,11 @@ public interface ActivityMapper {
      * @return
      */
     List<Activity> selectActivityByIds(String[] ids);
+
+    /**
+     * 批量保存创建的市场活动
+     * @param activityList
+     * @return
+     */
+    int insetActivityByList(List<Activity> activityList);
 }

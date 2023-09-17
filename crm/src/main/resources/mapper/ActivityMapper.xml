@@ -285,4 +285,14 @@
     </where>
     order by a.create_time desc
   </select>
+  
+  <insert id="insetActivityByList" parameterType="activity">
+    insert into tbl_activity(<include refid="Base_Column_List"></include>)
+    values
+    <foreach collection="list" item="activity" separator=",">
+      (#{activity.id}, #{activity.owner}, #{activity.name}, #{activity.startDate}, #{activity.endDate},
+        #{activity.cost}, #{activity.description}, #{activity.createTime}, #{activity.createBy},
+        #{activity.editTime}, #{activity.editBy})
+    </foreach>
+  </insert>
 </mapper>

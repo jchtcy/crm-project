@@ -8,6 +8,8 @@
         <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>
     <typeAliases>
-        <package name="com.jch.crm.*.domain"/>
+        <package name="com.jch.crm.workbench.domain"/>
+        <package name="com.jch.crm.settings.domain"/>
+        <package name="com.jch.crm.web.domain"/>
     </typeAliases>
 </configuration>

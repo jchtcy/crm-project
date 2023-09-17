@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * 文件操作
+ *  excel文件操作的工具类
  */
-public class FileUtils {
+public class HSSFUtils {
 
     /**
      * 导出市场活动
@@ -89,5 +89,25 @@ public class FileUtils {
         wb.write(os);
         wb.close();
         os.flush();
+    }
+
+    /**
+     * 从指定的HSSFCell对象中获取列的值
+     * @return
+     */
+    public static String getCellValueForStr(HSSFCell cell) {
+        String res = "";
+        if (cell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+            res = cell.getStringCellValue();
+        } else if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+            res = cell.getNumericCellValue() + "";
+        } else if (cell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN) {
+            res = cell.getBooleanCellValue() + "";
+        } else if (cell.getCellType() == HSSFCell.CELL_TYPE_FORMULA) {
+            res = cell.getCellFormula() + "";
+        } else {
+            res = "";
+        }
+        return res;
     }
 }

@@ -13,7 +13,7 @@
             // 给"下载"按钮添加单击事件
             $("#fileDownloadButton").click(function () {
                // 发送文件下载请, 文件下载的请求只能发同步请求, 不能发异步请求
-                window.location.href = "workbench/activity/fileDowwnload.do"
+                window.location.href = "workbench/activity/fileDownload.do"
             });
         })
     </script>
