@@ -7,7 +7,9 @@ import com.jch.crm.commons.utils.HSSFUtils;
 import com.jch.crm.commons.utils.UUIDUtils;
 import com.jch.crm.settings.domain.User;
 import com.jch.crm.settings.service.UserService;
+import com.jch.crm.workbench.domain.ActivityRemark;
 import com.jch.crm.workbench.domain.Activity;
+import com.jch.crm.workbench.service.ActivityRemarkService;
 import com.jch.crm.workbench.service.ActivityService;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -33,6 +35,9 @@ public class ActivityController {
 
     @Autowired
     private ActivityService activityService;
+
+    @Autowired
+    private ActivityRemarkService activityRemarkService;
 
     @RequestMapping("/workbench/activity/index.do")
     public String index(HttpServletRequest request) {
@@ -256,5 +261,14 @@ public class ActivityController {
             }
         }
         return returnObject;
+    }
+
+    @RequestMapping("/workbench/activity/detailActivity.do")
+    public String detailActivity(String id, HttpServletRequest request) {
+        Activity activity = activityService.queryActivityDetailById(id);
+        List<ActivityRemark> activitieRemarkList = activityRemarkService.queryActivityRemarkListByActivityId(id);
+        request.setAttribute("activity", activity);
+        request.setAttribute("activitieRemarkList", activitieRemarkList);
+        return "workbench/activity/detail";
     }
 }
