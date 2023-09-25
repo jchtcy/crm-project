@@ -1,6 +1,6 @@
 package com.jch.crm.settings.interceptor;
 
-import com.jch.crm.commons.contants.Contants;
+import com.jch.crm.settings.commons.contants.Contants;
 import com.jch.crm.settings.domain.User;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

@@ -1,4 +1,4 @@
-package com.jch.crm.commons.utils;
+package com.jch.crm.settings.commons.utils;
 
 import com.jch.crm.workbench.domain.Activity;
 import org.apache.poi.hssf.usermodel.HSSFCell;

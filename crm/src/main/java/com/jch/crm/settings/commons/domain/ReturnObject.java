@@ -1,4 +1,4 @@
-package com.jch.crm.commons.domain;
+package com.jch.crm.settings.commons.domain;
 
 public class ReturnObject {
     private String code;

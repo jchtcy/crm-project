@@ -1,4 +1,4 @@
-package com.jch.crm.commons.contants;
+package com.jch.crm.settings.commons.contants;
 
 public class Contants {
     // 保存ReturnObject类中的Code值

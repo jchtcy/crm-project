@@ -74,13 +74,13 @@
 <!--               selectByExampleQueryId="false">-->
 <!--        </table>-->
 
-        <!--
+
                 <table tableName="tbl_clue" domainObjectName="Clue"
                        enableCountByExample="false" enableUpdateByExample="false"
                        enableDeleteByExample="false" enableSelectByExample="false"
                        selectByExampleQueryId="false">
                 </table>
-
+<!--
                 <table tableName="tbl_clue_activity_relation" domainObjectName="ClueActivityRelation"
                        enableCountByExample="false" enableUpdateByExample="false"
                        enableDeleteByExample="false" enableSelectByExample="false"
@@ -145,11 +145,11 @@
 <!--                </table>-->
 
 
-                <table tableName="tbl_activity_remark" domainObjectName="ActivityRemark"
-                       enableCountByExample="false" enableUpdateByExample="false"
-                       enableDeleteByExample="false" enableSelectByExample="false"
-                       selectByExampleQueryId="false">
-                </table>
+<!--                <table tableName="tbl_activity_remark" domainObjectName="ActivityRemark"-->
+<!--                       enableCountByExample="false" enableUpdateByExample="false"-->
+<!--                       enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--                       selectByExampleQueryId="false">-->
+<!--                </table>-->
 
         <!--
         <table tableName="tbl_transaction" domainObjectName="Transaction"

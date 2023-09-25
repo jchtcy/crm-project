@@ -1,10 +1,10 @@
 package com.jch.crm.workbench.controller;
 
-import com.jch.crm.commons.contants.Contants;
-import com.jch.crm.commons.domain.ReturnObject;
-import com.jch.crm.commons.utils.DateUtils;
-import com.jch.crm.commons.utils.HSSFUtils;
-import com.jch.crm.commons.utils.UUIDUtils;
+import com.jch.crm.settings.commons.contants.Contants;
+import com.jch.crm.settings.commons.domain.ReturnObject;
+import com.jch.crm.settings.commons.utils.DateUtils;
+import com.jch.crm.settings.commons.utils.HSSFUtils;
+import com.jch.crm.settings.commons.utils.UUIDUtils;
 import com.jch.crm.settings.domain.User;
 import com.jch.crm.settings.service.UserService;
 import com.jch.crm.workbench.domain.ActivityRemark;
@@ -124,8 +124,8 @@ public class ActivityController {
         ReturnObject returnObject = new ReturnObject();
 
         User user = (User) session.getAttribute(Contants.SESSION_USER);
-        activity.setCreateTime(DateUtils.formateDateTime(new Date()));
-        activity.setCreateBy(user.getId());
+        activity.setEditTime(DateUtils.formateDateTime(new Date()));
+        activity.setEditBy(user.getId());
 
         try {
             int count = activityService.updateEditActivity(activity);
