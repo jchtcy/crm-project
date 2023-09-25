@@ -9,6 +9,8 @@ import com.jch.crm.settings.domain.User;
 import com.jch.crm.settings.service.DicValueService;
 import com.jch.crm.settings.service.UserService;
 import com.jch.crm.workbench.domain.Clue;
+import com.jch.crm.workbench.domain.ClueRemark;
+import com.jch.crm.workbench.service.ClueRemarkService;
 import com.jch.crm.workbench.service.ClueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,9 @@ public class ClueController {
 
     @Autowired
     private ClueService clueService;
+
+    @Autowired
+    private ClueRemarkService clueRemarkService;
 
     @RequestMapping("/workbench/clue/index.do")
     public String index(HttpServletRequest request) {
@@ -132,5 +137,15 @@ public class ClueController {
             returnObject.setMessage("删除失败, 请稍后重试");
         }
         return returnObject;
+    }
+
+    @RequestMapping("/workbench/clue/detailClue.do")
+    public String detailClue(String id, HttpServletRequest request) {
+        Clue clue = clueService.queryClueById(id);
+        List<ClueRemark> clueRemarkList = clueRemarkService.queryClueRemarkListByClueId(id);
+
+        request.setAttribute("clue", clue);
+        request.setAttribute("clueRemarkList", clueRemarkList);
+        return "workbench/clue/detail";
     }
 }
