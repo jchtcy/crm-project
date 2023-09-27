@@ -15,4 +15,6 @@ public interface ClueService {
     public int saveEditClue(Clue clue);
 
     public int deleteClueByIds(String[] ids);
+
+    public Clue queryClueDetailById(String id);
 }

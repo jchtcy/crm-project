@@ -141,7 +141,7 @@ public class ClueController {
 
     @RequestMapping("/workbench/clue/detailClue.do")
     public String detailClue(String id, HttpServletRequest request) {
-        Clue clue = clueService.queryClueById(id);
+        Clue clue = clueService.queryClueDetailById(id);
         List<ClueRemark> clueRemarkList = clueRemarkService.queryClueRemarkListByClueId(id);
 
         request.setAttribute("clue", clue);
