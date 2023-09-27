@@ -123,4 +123,14 @@
       <if test="activityId != null and activityId != ''">and activity_id = #{activityId}</if>
     </where>
   </delete>
+
+  <select id="selectClueActivityRelationByClueId" parameterType="string" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+        from tbl_clue_activity_relation
+        where clue_id = #{clueId}
+  </select>
+
+  <delete id="deleteClueActivityRelationByClueId" parameterType="string">
+    delete from tbl_clue_activity_relation where clue_id = #{clueId}
+  </delete>
 </mapper>

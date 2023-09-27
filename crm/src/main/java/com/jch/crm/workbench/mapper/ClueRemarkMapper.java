@@ -58,4 +58,11 @@ public interface ClueRemarkMapper {
      * @return
      */
     List<ClueRemark> queryClueRemarkListByClueId(String clueId);
+
+    /**
+     * 根据线索id删除备注
+     * @param clueId
+     * @return
+     */
+    int deleteClueRemarkByClueIdInt(String clueId);
 }

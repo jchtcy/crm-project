@@ -3,6 +3,7 @@ package com.jch.crm.workbench.service;
 import com.jch.crm.workbench.domain.Clue;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ClueService {
 
@@ -17,4 +18,6 @@ public interface ClueService {
     public int deleteClueByIds(String[] ids);
 
     public Clue queryClueDetailById(String id);
+
+    void saveConvert(Map<String, Object> map);
 }

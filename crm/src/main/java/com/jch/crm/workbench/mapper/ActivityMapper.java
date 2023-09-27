@@ -133,4 +133,11 @@ public interface ActivityMapper {
      * @return
      */
     List<Activity> selectActivityDetailByClueId(String clueId);
+
+    /**
+     * 根据name模糊查询市场互动,并且查询跟clueId关联过的市场活动
+     * @param map
+     * @return
+     */
+    List<Activity> selectActivityConvertByNameClueId(Map<String, Object> map);
 }

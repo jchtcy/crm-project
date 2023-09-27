@@ -53,7 +53,31 @@ public interface ClueActivityRelationMapper {
      */
     int updateByPrimaryKey(ClueActivityRelation record);
 
+    /**
+     * 批量插入线索和市场活动关联表
+     * @param list
+     * @return
+     */
     int inserClueActivityRelationBatch(List<ClueActivityRelation> list);
 
+    /**
+     * 根据条件删除线索和市场活动关联表
+     * @param clueActivityRelation
+     * @return
+     */
     int deleterClueActivityRelationByCondition(ClueActivityRelation clueActivityRelation);
+
+    /**
+     * 根据clueId查询线索和市场活动的关联表
+     * @param clueId
+     * @return
+     */
+    List<ClueActivityRelation> selectClueActivityRelationByClueId(String clueId);
+
+    /**
+     * 根据线索id删除线索和市场活动关联表
+     * @param clueId
+     * @return
+     */
+    int deleteClueActivityRelationByClueId(String clueId);
 }

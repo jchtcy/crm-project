@@ -230,4 +230,54 @@ public class ClueController {
         }
         return returnObject;
     }
+
+    @RequestMapping("/workbench/clue/toConvert.do")
+    public String toConvert(String id, HttpServletRequest request) {
+        // 查询线索明细信息
+        Clue clue = clueService.queryClueDetailById(id);
+        List<DicValue> stageList = dicValueService.queryDicValueByTypeCode("stage");
+
+        request.setAttribute("clue", clue);
+        request.setAttribute("stageList", stageList);
+        // 请求转发
+        return "workbench/clue/convert";
+    }
+
+    @RequestMapping("/workbench/clue/queryActivityConvertByNameClueId.do")
+    @ResponseBody
+    public Object queryActivityConvertByNameClueId(String activityName, String clueId) {
+        // 封装参数
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("activityName", activityName);
+        map.put("clueId", clueId);
+        List<Activity> activityList = activityService.queryActivityConvertByNameClueId(map);
+        return activityList;
+    }
+
+    @RequestMapping("/workbench/clue/convertClue.do")
+    @ResponseBody
+    public Object convertClue(String clueId, String money, String name, String expectedDate, String stage, String activityId,
+                              String isCreateTran, HttpSession session) {
+        ReturnObject returnObject = new ReturnObject();
+        User user = (User) session.getAttribute(Contants.SESSION_USER);
+        // 封装参数
+        Map<String, Object> map = new HashMap<>();
+        map.put("clueId", clueId);
+        map.put("money", money);
+        map.put("name", name);
+        map.put("expectedDate", expectedDate);
+        map.put("stage", stage);
+        map.put("activityId", activityId);
+        map.put("isCreateTran", isCreateTran);
+        map.put(Contants.SESSION_USER, user);
+        try {
+            clueService.saveConvert(map);
+            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setMessage("系统忙,请稍后重试...");
+        }
+        return returnObject;
+    }
 }
