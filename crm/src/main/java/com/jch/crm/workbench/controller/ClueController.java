@@ -8,8 +8,12 @@ import com.jch.crm.settings.domain.DicValue;
 import com.jch.crm.settings.domain.User;
 import com.jch.crm.settings.service.DicValueService;
 import com.jch.crm.settings.service.UserService;
+import com.jch.crm.workbench.domain.Activity;
 import com.jch.crm.workbench.domain.Clue;
+import com.jch.crm.workbench.domain.ClueActivityRelation;
 import com.jch.crm.workbench.domain.ClueRemark;
+import com.jch.crm.workbench.service.ActivityService;
+import com.jch.crm.workbench.service.ClueActivityRelationService;
 import com.jch.crm.workbench.service.ClueRemarkService;
 import com.jch.crm.workbench.service.ClueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class ClueController {
@@ -36,6 +39,12 @@ public class ClueController {
 
     @Autowired
     private ClueRemarkService clueRemarkService;
+
+    @Autowired
+    private ClueActivityRelationService clueActivityRelationService;
+
+    @Autowired
+    private ActivityService activityService;
 
     @RequestMapping("/workbench/clue/index.do")
     public String index(HttpServletRequest request) {
@@ -143,9 +152,82 @@ public class ClueController {
     public String detailClue(String id, HttpServletRequest request) {
         Clue clue = clueService.queryClueDetailById(id);
         List<ClueRemark> clueRemarkList = clueRemarkService.queryClueRemarkListByClueId(id);
-
+        List<Activity> activityList = activityService.queryActivityDetailByClueId(clue.getId());
         request.setAttribute("clue", clue);
         request.setAttribute("clueRemarkList", clueRemarkList);
+        request.setAttribute("activityList", activityList);
         return "workbench/clue/detail";
+    }
+
+
+    @RequestMapping("/workbench/clue/queryActivityDetailByNameClueId.do")
+    @ResponseBody
+    public Object queryActivityDetailByNameClueId(String activityName, String clueId) {
+
+        // 封装参数
+        Map<String, Object> map = new HashMap<>();
+        map.put("activityName", activityName);
+        map.put("clueId", clueId);
+
+        List<Activity> activityList = activityService.queryActivityDetailByNameClueId(map);
+        return activityList;
+    }
+
+    @RequestMapping("/workbench/clue/saveBound.do")
+    @ResponseBody
+    public Object saveBound(String[] activityId, String clueId) {
+        //返回结果
+        ReturnObject returnObject = new ReturnObject();
+        // 封装参数
+        List<ClueActivityRelation> list = new ArrayList<>();
+        ClueActivityRelation clueActivityRelation = null;
+        for (String s : activityId) {
+            clueActivityRelation = new ClueActivityRelation();
+            clueActivityRelation.setId(UUIDUtils.getUUID());
+            clueActivityRelation.setClueId(clueId);
+            clueActivityRelation.setActivityId(s);
+            list.add(clueActivityRelation);
+        }
+        try {
+            int count = clueActivityRelationService.saveClueActivityRelationBatch(list);
+            if (count > 0) {
+                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+                List<Activity> activityList = activityService.queryActivityDetailByIds(activityId);
+                returnObject.setData(activityList);
+            } else {
+                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setMessage("插入失败,请稍后重试。");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setMessage("插入失败,请稍后重试。");
+        }
+        return returnObject;
+    }
+
+    @RequestMapping("/workbench/clue/saveUnBound.do")
+    @ResponseBody
+    public Object saveUnBound(String clueId, String activityId) {
+        //返回结果
+        ReturnObject returnObject = new ReturnObject();
+        // 收集参数
+        ClueActivityRelation clueActivityRelation = new ClueActivityRelation();
+        clueActivityRelation.setClueId(clueId);
+        clueActivityRelation.setActivityId(activityId);
+        try {
+            int count = clueActivityRelationService.deleterClueActivityRelationByCondition(clueActivityRelation);
+            if (count > 0) {
+                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+            } else {
+                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setMessage("删除失败,请稍后重试。");
+            }
+        } catch (Exception e) {
+            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setMessage("删除失败,请稍后重试。");
+            e.printStackTrace();
+        }
+        return returnObject;
     }
 }

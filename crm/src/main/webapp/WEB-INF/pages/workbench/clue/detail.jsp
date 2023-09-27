@@ -55,6 +55,10 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		//给"关联市场活动"按钮添加单击事件
 		$("#bundActivityBtn").click(function () {
 			//初始化工作
+			//清空搜索框
+			$("#searchActivityTxt").val("");
+			//清空搜索的市场活动列表
+			$("#tBody").html("");
 
 			//弹出"线索关联市场活动"的模态窗口
 			$("#bundModal").modal("show");
@@ -67,7 +71,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			var clueId='${clue.id}';
 			//发送请求
 			$.ajax({
-				url:'workbench/clue/queryActivityForDetailByNameClueId.do',
+				url:'workbench/clue/queryActivityDetailByNameClueId.do',
 				data:{
 					activityName:activityName,
 					clueId:clueId
@@ -89,6 +93,92 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					$("#tBody").html(htmlStr);
 				}
 			});
+		});
+
+		//给"关联"按钮添加单击事件
+		$("#saveBundActivityBtn").click(function () {
+			//收集参数
+			//获取列表中所有被选中的checkbox
+			var chckedIds=$("#tBody input[type='checkbox']:checked");
+			//表单验证
+			if(chckedIds.size()==0){
+				alert("请选择要关联的市场活动");
+				return;
+			}
+			var ids="";
+			$.each(chckedIds,function () {//activityId=xxxx&activityId=xxxx&....&activityId=xxxx&
+				ids+="activityId="+this.value+"&";
+			});
+			ids+="clueId=${clue.id}";//activityId=xxxx&activityId=xxxx&....&activityId=xxxx&clueId=xxxxx
+
+			//发送请求
+			$.ajax({
+				url:'workbench/clue/saveBound.do',
+				data:ids,
+				type:'post',
+				dataType:'json',
+				success:function (data) {
+					console.log(data)
+					if(data.code=="1"){
+						//关闭模态窗口
+						$("#bundModal").modal("hide");
+						//刷新已经关联过的市场活动列表
+						var htmlStr="";
+						$.each(data.data,function (index,obj) {
+							htmlStr+="<tr id=\"tr_"+obj.id+"\">";
+							htmlStr+="<td>"+obj.name+"</td>";
+							htmlStr+="<td>"+obj.startDate+"</td>";
+							htmlStr+="<td>"+obj.endDate+"</td>";
+							htmlStr+="<td>"+obj.owner+"</td>";
+							htmlStr+="<td><a href=\"javascript:void(0);\" activityId=\""+obj.id+"\"  style=\"text-decoration: none;\"><span class=\"glyphicon glyphicon-remove\"></span>解除关联</a></td>";
+							htmlStr+="</tr>";
+						});
+						$("#relationedTBody").append(htmlStr);
+					}else{
+						//提示信息
+						alert(data.message);
+						//模态窗口不关闭
+						$("#bundModal").modal("show");
+					}
+				}
+			});
+		});
+
+		//给所有的"解除关联"按钮添加单击事件
+		$("#relationedTBody").on("click","a",function () {
+			//收集参数
+			var activityId=$(this).attr("activityId");
+			var clueId="${clue.id}";
+
+			if(window.confirm("确定删除吗？")){
+				//发送请求
+				$.ajax({
+					url:'workbench/clue/saveUnBound.do',
+					data:{
+						activityId:activityId,
+						clueId:clueId
+					},
+					type:'post',
+					dataType:'json',
+					success:function (data) {
+						if(data.code=="1"){
+							//刷新已经关联的市场活动列表
+							$("#tr_"+activityId).remove();
+						}else{
+							//提示信息
+							alert(data.message);
+						}
+					}
+				});
+			}
+		});
+
+		//给"转换"按钮添加单击事件
+		$("#convertClueBtn").click(function () {
+			//收集参数
+			var id='${clue.id}';
+			//发送同步请求
+			window.location.href="workbench/clue/toConvert.do?id="+id;
 		});
 	});
 	
@@ -147,7 +237,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">关联</button>
+					<button type="button" class="btn btn-primary" id="saveBundActivityBtn">关联</button>
 				</div>
 			</div>
 		</div>
@@ -165,7 +255,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			<h3>${clue.fullname}${clue.appellation} <small>${clue.company}</small></h3>
 		</div>
 		<div style="position: relative; height: 50px; width: 500px;  top: -72px; left: 700px;">
-			<button type="button" class="btn btn-default" onclick="window.location.href='convert.html';"><span class="glyphicon glyphicon-retweet"></span> 转换</button>
+			<button type="button" class="btn btn-default" id="convertClueBtn"><span class="glyphicon glyphicon-retweet"></span> 转换</button>
 			
 		</div>
 	</div>
@@ -337,9 +427,9 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<td></td>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="relationedTBody">
 						<c:forEach items="${activityList}" var="act">
-							<tr>
+							<tr id="tr_${act.id}">
 								<td>${act.name}</td>
 								<td>${act.startDate}</td>
 								<td>${act.endDate}</td>
