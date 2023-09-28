@@ -58,14 +58,14 @@ public class ActivityController {
             int count = activityService.saveCreateActivity(activity);
 
             if (count > 0) {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
             } else {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("系统忙,请稍后重试...");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("系统忙,请稍后重试...");
         }
         return returnObject;
@@ -98,14 +98,14 @@ public class ActivityController {
         try {
             row = activityService.deleteActivityByIds(id);
             if (row > 0) {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
             } else {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("系统忙,请稍后重试");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("系统忙,请稍后重试");
         }
         return returnObject;
@@ -130,9 +130,9 @@ public class ActivityController {
         try {
             int count = activityService.updateEditActivity(activity);
             if (count > 0 ) {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
             } else {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("系统忙,请稍后重试");
             }
         } catch (Exception e) {
@@ -185,7 +185,7 @@ public class ActivityController {
 
         // 返回响应信息
         ReturnObject returnObject = new ReturnObject();
-        returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+        returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
         returnObject.setMessage("上传成功");
         return returnObject;
     }
@@ -247,11 +247,11 @@ public class ActivityController {
                 activityList.add(activity);
             }
             int count = activityService.saveCreateActivityByList(activityList);
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
             returnObject.setData(count);
         } catch (IOException e) {
             e.printStackTrace();
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("系统忙, 请稍后重试");
         } finally {
             try {

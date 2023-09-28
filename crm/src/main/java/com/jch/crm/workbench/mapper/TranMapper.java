@@ -50,4 +50,11 @@ public interface TranMapper {
      * @mbg.generated Wed Sep 27 18:23:03 CST 2023
      */
     int updateByPrimaryKey(Tran record);
+
+    /**
+     * 根据id查询交易的明细信息
+     * @param id
+     * @return
+     */
+    Tran selectTranForDetailById(String id);
 }

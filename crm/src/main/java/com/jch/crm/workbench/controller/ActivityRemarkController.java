@@ -34,15 +34,15 @@ public class ActivityRemarkController {
         try {
             int count = activityRemarkService.saveActivityRemarkForSelective(remark);
             if (count > 0) {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
                 returnObject.setData(remark);
             } else {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("插入失败, 请稍后重试");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("插入失败, 请稍后重试");
         }
         return returnObject;
@@ -55,14 +55,14 @@ public class ActivityRemarkController {
         try {
             int count = activityRemarkService.deleteActivityRemarkById(id);
             if (count > 0) {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
             } else {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("删除失败, 请稍后重试");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("删除失败, 请稍后重试");
         }
         return returnObject;
@@ -79,15 +79,15 @@ public class ActivityRemarkController {
         try {
             int count = activityRemarkService.updateActivityRemarkById(activityRemark);
             if (count > 0) {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
                 returnObject.setData(activityRemark);
             } else {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("更新评论失败, 请稍后重试");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("更新评论失败, 请稍后重试");
         }
         return returnObject;

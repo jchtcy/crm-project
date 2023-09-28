@@ -65,11 +65,11 @@ public class ClueController {
         ReturnObject returnObject = new ReturnObject();
         try {
             List<Clue> clueList = clueService.queryClueListByCondition(new Clue());
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
             returnObject.setData(clueList);
         } catch (Exception e) {
             e.printStackTrace();
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("查询失败, 请稍后重试");
         }
         return returnObject;
@@ -86,14 +86,14 @@ public class ClueController {
         try {
             int count = clueService.saveCreateClue(clue);
             if (count > 0) {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
             } else {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("插入失败, 请稍后重试");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("插入失败, 请稍后重试");
         }
         return returnObject;
@@ -115,14 +115,14 @@ public class ClueController {
         try {
             int count = clueService.saveEditClue(clue);
             if (count > 0) {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
             } else {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("更新失败, 请稍后重试");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("更新失败, 请稍后重试");
         }
         return returnObject;
@@ -135,14 +135,14 @@ public class ClueController {
         try {
             int count = clueService.deleteClueByIds(id);
             if (count > 0) {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
             } else {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("删除失败, 请稍后重试");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("删除失败, 请稍后重试");
         }
         return returnObject;
@@ -191,16 +191,16 @@ public class ClueController {
         try {
             int count = clueActivityRelationService.saveClueActivityRelationBatch(list);
             if (count > 0) {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
                 List<Activity> activityList = activityService.queryActivityDetailByIds(activityId);
                 returnObject.setData(activityList);
             } else {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("插入失败,请稍后重试。");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("插入失败,请稍后重试。");
         }
         return returnObject;
@@ -218,13 +218,13 @@ public class ClueController {
         try {
             int count = clueActivityRelationService.deleterClueActivityRelationByCondition(clueActivityRelation);
             if (count > 0) {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
             } else {
-                returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("删除失败,请稍后重试。");
             }
         } catch (Exception e) {
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("删除失败,请稍后重试。");
             e.printStackTrace();
         }
@@ -272,10 +272,10 @@ public class ClueController {
         map.put(Contants.SESSION_USER, user);
         try {
             clueService.saveConvert(map);
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_SUCESS);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            returnObject.setCode(Contants.RETURN_OBJECT_DOCE_FAIL);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("系统忙,请稍后重试...");
         }
         return returnObject;
